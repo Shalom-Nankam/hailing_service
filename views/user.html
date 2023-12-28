@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hompage</title>
+    <style>
+      .wrapper {
+        /* display: flex; */
+        height: 100vh;
+        width: 100vw;
+        align-items: start;
+        justify-content: center;
+        background-color: ghostwhite;
+        padding-block: 50px;
+        padding-inline: 100px;
+      }
+      dialog form {
+        display: inline;
+      }
+      input {
+        margin-block: 10px;
+        height: 25px;
+        border-radius: 6px;
+        width: 200px;
+      }
+
+      ::backdrop {
+        background-color: gray;
+        opacity: 0.8;
+      }
+      .cont-btn {
+        width: 100%;
+        height: 30px;
+        background-color: transparent;
+        border-width: 0.5px;
+        border-radius: 6px;
+        margin-top: 10px;
+      }
+      .blue-btn {
+        color: black;
+        width: 100%;
+        border-width: 0.5px;
+        border-radius: 6px;
+        margin-top: 20px;
+        height: 30px;
+      }
+      .blue-btn:hover {
+        background-color: blue;
+        color: white;
+      }
+      h1 {
+        font-size: xx-large;
+        font-weight: bold;
+      }
+      #take-ride {
+        height: 40px;
+        width: 200px;
+        border-radius: 10px;
+        border-color: transparent;
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Welcome, Guest</h1>
+      <p>Click on the button below to start taking rides.</p>
+      <button class="blue-btn" id="take-ride">Take a ride</button>
+
+      <dialog id="booking-dialog">
+        <h3>Please fill in your details</h3>
+        <label for="destination">Your destination:</label><br />
+        <input
+          autocomplete="off"
+          type="text"
+          name="destination"
+          id="destination"
+        /><br />
+        <label for="user_location"> Your Price: </label><br />
+        <input autocomplete="off" type="text" name="price" id="price" /><br />
+        <button class="blue-btn" id="book-ride" value="">Book ride</button>
+        <button
+          class="blue-btn"
+          id="cancel-btn"
+          value=""
+          style="background-color: red; color: white"
+        >
+          Cancel
+        </button>
+      </dialog>
+    </div>
+  </body>
+
+  <!-- <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    const socket = io("http://localhost:6002", {
+      query: {
+        user_type: "user",
+      },
+    });
+
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+
+    socket.on("userCreated", (data) => {
+      console.log({ data });
+      localStorage.setItem("user_id", data);
+    });
+
+    socket.on("orderAccepted", (data) => {
+      console.log(data);
+
+      const notificationContainer = document.getElementById(
+        "notification-container"
+      );
+
+      const div = document.createElement("div");
+
+      div.innerHTML = `<div style="margin: 10px;" class="card">
+            <h5 class="card-header">Order Request</h5>
+            <div class="card-body">
+                <h5 class="card-title">${data.order.driver.name} has accepted your ride</h5>
+                <p class="card-text">Current Location: ${data.order.current_location}</p>
+                <p class="card-text">Destination: ${data.order.destination}</p>
+                <p class="card-text">Price: N${data.order.price}</p>
+            </div>
+            </div>`;
+
+      notificationContainer.appendChild(div);
+    });
+
+    socket.on("orderRejected", (data) => {
+      console.log(data);
+
+      const notificationContainer = document.getElementById(
+        "notification-container"
+      );
+
+      const div = document.createElement("div");
+
+      div.innerHTML = `<div style="margin: 10px;" class="card">
+            <h5 class="card-header">Order Request</h5>
+            <div class="card-body">
+                <h5 class="card-title">${data.order.driver.name} has rejected your ride</h5>
+                <p class="card-text">Current Location: ${data.order.current_location}</p>
+                <p class="card-text">Destination: ${data.order.destination}</p>
+                <p class="card-text">Price: N${data.order.price}</p>
+            </div>
+            </div>`;
+
+      notificationContainer.appendChild(div);
+    });
+  </script> -->
+  <script>
+    const bookingDialog = document.getElementById("booking-dialog");
+    const takeBtn = document.getElementById("take-ride");
+    const bookBtn = document.getElementById("book-ride");
+    const cancelBtn = document.getElementById("cancel-btn");
+
+    cancelBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      bookingDialog.close();
+    });
+
+    takeBtn.addEventListener("click", function (e) {
+      bookingDialog.showModal();
+    });
+
+    bookBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      const destinationVal = document.getElementById("destination").value;
+      const priceVal = document.getElementById("price").value;
+      if (destinationVal && priceVal) {
+      } else if (!destinationVal) {
+        alert("Please add your destination");
+      } else {
+        alert("Please add your price");
+      }
+    });
+
+    function setName() {
+      const headerName = document.querySelector("h1");
+
+      headerName.innerText = `Welcome, ${sessionStorage.getItem("name")}`;
+    }
+
+    setName();
+  </script>
+</html>

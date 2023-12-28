@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      .wrapper {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+        align-items: center;
+        justify-content: center;
+        background-color: ghostwhite;
+      }
+      dialog form {
+        display: inline;
+      }
+      input {
+        margin-block: 10px;
+        height: 25px;
+        border-radius: 6px;
+        width: 200px;
+      }
+
+      ::backdrop {
+        background-color: gray;
+        opacity: 0.8;
+      }
+      .auth-btn {
+        background-color: transparent;
+        border: 1px solid blue;
+        height: 40px;
+        width: 200px;
+        border-radius: 20px;
+      }
+      .auth-card {
+        width: 250px;
+        height: 100px;
+        display: flex;
+        margin-right: 50px;
+        box-shadow: 2px 2px 30px 4px blue;
+        padding: 50px;
+        align-items: center;
+        border-radius: 10px;
+      }
+      .auth-card img {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        margin-right: 20px;
+      }
+      .blue-btn {
+        color: black;
+        width: 100%;
+        border-width: 0.5px;
+        border-radius: 6px;
+        margin-top: 20px;
+        height: 30px;
+      }
+      .auth-btn:hover,
+      #cont-btn1:hover {
+        background-color: blue;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="auth-card">
+        <img src="./images/profile.jpeg" alt="" srcset="" />
+        <button id="driver" class="auth-btn" type="submit">
+          Go in as a Driver
+        </button>
+      </div>
+      <div class="auth-card">
+        <img src="./images/profile.jpeg" alt="" srcset="" />
+        <button id="user" class="auth-btn" type="submit">
+          Go in as a User
+        </button>
+      </div>
+      <dialog id="details-dialog">
+        <h3>Please fill in your details</h3>
+        <label for="user_name">Your name:</label><br />
+        <input
+          autocomplete="off"
+          type="text"
+          name="user_name"
+          id="user_name"
+        /><br />
+        <label for="user_location"> Your location: </label><br />
+        <input
+          autocomplete="off"
+          type="text"
+          name="user_location"
+          id="user_location"
+        /><br />
+        <button class="blue-btn" id="cont-btn1" value="">Continue</button>
+      </dialog>
+    </div>
+
+    <script>
+      const detailsDialog = document.getElementById("details-dialog");
+      const continueBtn1 = document.getElementById("cont-btn1");
+      const driverBtn = document.getElementById("driver");
+      const userBtn = document.getElementById("user");
+
+      var isUser = true;
+
+      continueBtn1.addEventListener("click", function (e) {
+        e.preventDefault();
+        const nameValue = document.getElementById("user_name").value;
+        const locationValue = document.getElementById("user_location").value;
+        if (nameValue && locationValue) {
+          detailsDialog.close();
+          sessionStorage.setItem("name", nameValue);
+          sessionStorage.setItem("location", locationValue);
+          registerUser();
+        } else if (!nameValue) {
+          alert("Please fill in your name");
+        } else {
+          alert("Please add your location");
+        }
+      });
+
+      driverBtn.addEventListener("click", function () {
+        isUser = false;
+        // detailsDialog.showModal();
+        registerUser(isUser);
+      });
+
+      userBtn.addEventListener("click", function () {
+        isUser = true;
+        // detailsDialog.showModal();
+        registerUser(isUser);
+      });
+
+      async function registerUser() {
+        const userType = isUser ? "/user" : "/driver";
+        try {
+          const response = await fetch(`/home${userType}`, {
+            method: "POST",
+            // headers: {
+            //   "Content-Type": "application/json",
+            // },
+          });
+        } catch (error) {
+          console.log({ error });
+        }
+      }
+    </script>
+  </body>
+</html>
